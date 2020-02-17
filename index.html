@@ -12,17 +12,56 @@
         var vConsole = new VConsole();
         console.log('Hello world');
     </script>
+    <style>
+        button {
+            height: 35px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: medium;
+            font-family: cursive;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
 <button onclick="getCameraStream(true)">点击开启前置摄像头</button>
-
+<br>
 <button onclick="getCameraStream(false)">点击开启后置摄像头</button>
+<br>
+<button onclick="applyConstraints()">改变分辨率</button>
 
 <video src=""></video>
 
 
 <script>
+    function applyConstraints() {
+        var constraints = {
+            frameRate: {
+                max: 30,
+                ideal:30
+            },
+            aspectRatio: { min: 1.777, max: 1.778 },
+            width: {
+                min: 0,
+                ideal: 640,
+                max: 640
+            },
+            height: {
+                min: 0,
+                ideal:360,
+                max: 360
+            }
+        };
+
+        var localVideoTrack = window.stream.getVideoTracks()[0];
+        localVideoTrack.applyConstraints(constraints).then(function () {
+            console.info('applyConstraints succeed', JSON.stringify(constraints, null, '    '));
+        }).catch(function (error) {
+            console.info("applyConstraints Error: ", error.name);
+        })
+    }
+    
     function getCameraStream(type) {
         var  constraints = {
             audio: false,
@@ -73,6 +112,7 @@
             console.warn("navigator.mediaDevices.getUserMedia")
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(function(stream) {
+                    window.stream = stream
                     console.warn("get stream success")
                     var video = document.querySelector('video');
                     // 旧的浏览器可能没有srcObject
