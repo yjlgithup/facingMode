@@ -15,11 +15,11 @@
 </head>
 <body>
 
-<video src=""></video>
-
 <button onclick="getCameraStream(true)">点击开启前置摄像头</button>
 
 <button onclick="getCameraStream(false)">点击开启后置摄像头</button>
+
+<video src=""></video>
 
 
 <script>
@@ -37,7 +37,9 @@
             constraints.video.facingMode = "user"
         }else{
             console.log("facingMode: environment")
-            constraints.video.facingMode = "environment"
+            constraints.video.facingMode = {
+                exact: "environment"
+            }
         }
         console.warn('constraints' + JSON.stringify(constraints, null, '    '))
 
@@ -67,8 +69,29 @@
             }
         }
 
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then(function(stream) {
+        if(navigator.mediaDevices.getUserMedia){
+            console.warn("navigator.mediaDevices.getUserMedia")
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function(stream) {
+                    console.warn("get stream success")
+                    var video = document.querySelector('video');
+                    // 旧的浏览器可能没有srcObject
+                    if ("srcObject" in video) {
+                        video.srcObject = stream;
+                    } else {
+                        // 防止在新的浏览器里使用它，应为它已经不再支持了
+                        video.src = window.URL.createObjectURL(stream);
+                    }
+                    video.onloadedmetadata = function(e) {
+                        video.play();
+                    };
+                })
+                .catch(function(err) {
+                    console.error(err.name + ": " + err.message);
+                });
+        }else if(navigator.getUserMedia){
+            console.warn("navigator.getUserMedia")
+            navigator.getUserMedia(constraints, function (stream) {
                 console.warn("get stream success")
                 var video = document.querySelector('video');
                 // 旧的浏览器可能没有srcObject
@@ -81,10 +104,12 @@
                 video.onloadedmetadata = function(e) {
                     video.play();
                 };
-            })
-            .catch(function(err) {
+            }, function (err) {
                 console.error(err.name + ": " + err.message);
-            });
+            })
+        }
+
+
     }
 </script>
 </body>
