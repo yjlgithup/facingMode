@@ -24,13 +24,20 @@
 
 <script>
     function getCameraStream(type) {
-        var constraints = {}
+        var  constraints = {
+            audio: false,
+            video: {
+                facingMode: "user" ,
+                width: { min: 0, ideal: 1280, max: 1920 },
+                height: { min: 0, ideal: 720, max: 1080 }
+            }
+        }
         if(type){
             console.log("facingMode: user")
-            constraints = { audio: false, video: { facingMode: "user" } }
+            constraints.video.facingMode = "user"
         }else{
             console.log("facingMode: environment")
-            constraints = { audio: false, video: { facingMode: { exact: "environment" } } }
+            constraints.video.facingMode = "environment"
         }
         console.warn('constraints' + JSON.stringify(constraints, null, '    '))
 
