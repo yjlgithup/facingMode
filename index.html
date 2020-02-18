@@ -73,7 +73,9 @@
         }
         if(type){
             console.log("facingMode: user")
-            constraints.video.facingMode = "user"
+            constraints.video.facingMode = {
+                exact: "user"
+            }
         }else{
             console.log("facingMode: environment")
             constraints.video.facingMode = {
