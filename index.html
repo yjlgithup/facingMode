@@ -65,6 +65,19 @@
         var localVideoTrack = window.stream.getVideoTracks()[0];
         localVideoTrack.applyConstraints(constraints).then(function () {
             console.info('applyConstraints succeed', JSON.stringify(constraints, null, '    '));
+
+            var video = document.querySelector('video');
+            // 旧的浏览器可能没有srcObject
+            if ("srcObject" in video) {
+                video.srcObject = stream;
+            } else {
+                // 防止在新的浏览器里使用它，应为它已经不再支持了
+                video.src = window.URL.createObjectURL(stream);
+            }
+            video.onloadedmetadata = function (e) {
+                video.play();
+                console.warn("Stream dimensions for :" + video.videoWidth + "x" + video.videoHeight);
+            };
         }).catch(function (error) {
             console.info("applyConstraints Error: ", error.name);
         })
