@@ -88,38 +88,21 @@
             audio: false,
             video: {}
         }
+        var facingMode = type ? "user" : 'environment'
         if (limit === 'exact') {
-            if (type) {
-                console.log("exact facingMode: user")
-                constraints.video.facingMode = {
-                    exact: "user"
-                }
-            } else {
-                console.log("exact facingMode: environment")
-                constraints.video.facingMode = {
-                    exact: "environment"
-                }
+            constraints.video.facingMode = {
+                exact: facingMode
             }
         } else if (limit === 'ideal') {
-            if (type) {
-                console.log("ideal facingMode: user")
-                constraints.video.facingMode = {
-                    ideal: "user"
-                }
-            } else {
-                console.log("ideal facingMode: environment")
-                constraints.video.facingMode = {
-                    ideal: "environment"
-                }
+            constraints.video.facingMode = {
+                ideal: facingMode
             }
         }
 
         console.warn('constraints' + JSON.stringify(constraints, null, '    '))
-
-        console.warn("navigator.getUserMedia")
         navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
             window.stream = stream
-            console.warn("get stream success")
+            console.warn("get stream success: " + JSON.stringify(constraints, null, '    '))
             var video = document.querySelector('video');
             // 旧的浏览器可能没有srcObject
             if ("srcObject" in video) {
@@ -136,20 +119,18 @@
             console.error(err);
             console.error(err.toString());
             if (err.name === 'NotReadableError') {
-                console.warn("NotReadableError!!!1")
-
+                console.warn("NotReadableError!!!!!!!!!!!!!")
                 var constraints = {
                     audio: false,
                     video: {
-                        facingMode: type
+                        facingMode: facingMode
                     }
                 }
 
                 console.warn('constraints is :' + JSON.stringify(constraints, null, '    '))
                 navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
                     window.stream = stream
-                    console.warn("stream： ", stream)
-                    console.warn("get stream success")
+                    console.warn("get stream success al: " + JSON.stringify(constraints, null, '    '))
                     var video = document.querySelector('video');
                     // 旧的浏览器可能没有srcObject
                     if ("srcObject" in video) {
