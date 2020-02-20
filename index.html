@@ -25,10 +25,16 @@
 </head>
 <body>
 
-<button onclick="getCameraStream(true)">点击开启前置摄像头</button>
+<button onclick="getCameraStream(true, 'exact')">点击开启前置摄像头(exact)</button>
 <br>
-<button onclick="getCameraStream(false)">点击开启后置摄像头</button>
+<button onclick="getCameraStream(false, 'exact')">点击开启后置摄像头(exact)</button>
 <br>
+
+<button onclick="getCameraStream(true, 'ideal')">点击开启前置摄像头(ideal)</button>
+<br>
+<button onclick="getCameraStream(false, 'ideal')">点击开启后置摄像头(ideal)</button>
+<br>
+
 <button onclick="applyConstraints(360)">改变分辨率为360</button>
 <br>
 <button onclick="applyConstraints(480)">改变分辨率为480</button>
@@ -64,7 +70,7 @@
         })
     }
     
-    function getCameraStream(type) {
+    function getCameraStream(type, limit) {
         var  constraints = {
             audio: false,
             video: {}
@@ -76,17 +82,32 @@
             //     height: { min: 0, ideal: 720, max: 1080 }
             // }
         }
-        if(type){
-            console.log("facingMode: user")
-            constraints.video.facingMode = {
-                exact: "user"
+        if(limit === 'exact'){
+            if(type){
+                console.log("facingMode: user")
+                constraints.video.facingMode = {
+                    exact: "user"
+                }
+            }else {
+                console.log("facingMode: environment")
+                constraints.video.facingMode = {
+                    exact: "environment"
+                }
             }
-        }else{
-            console.log("facingMode: environment")
-            constraints.video.facingMode = {
-                exact: "environment"
+        }else if(limit === 'ideal'){
+            if(type){
+                console.log("facingMode: user")
+                constraints.video.facingMode = {
+                    ideal: "user"
+                }
+            }else{
+                console.log("facingMode: environment")
+                constraints.video.facingMode = {
+                    ideal: "environment"
+                }
             }
         }
+
         console.warn('constraints' + JSON.stringify(constraints, null, '    '))
 
 
