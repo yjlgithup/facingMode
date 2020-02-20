@@ -87,34 +87,27 @@
         var constraints = {
             audio: false,
             video: {}
-            //     {
-            //     facingMode:{
-            //         ideal:  "user"
-            //     },
-            //     width: { min: 0, ideal: 1280, max: 1920 },
-            //     height: { min: 0, ideal: 720, max: 1080 }
-            // }
         }
         if (limit === 'exact') {
             if (type) {
-                console.log("facingMode: user")
+                console.log("exact facingMode: user")
                 constraints.video.facingMode = {
                     exact: "user"
                 }
             } else {
-                console.log("facingMode: environment")
+                console.log("exact facingMode: environment")
                 constraints.video.facingMode = {
                     exact: "environment"
                 }
             }
         } else if (limit === 'ideal') {
             if (type) {
-                console.log("facingMode: user")
+                console.log("ideal facingMode: user")
                 constraints.video.facingMode = {
                     ideal: "user"
                 }
             } else {
-                console.log("facingMode: environment")
+                console.log("ideal facingMode: environment")
                 constraints.video.facingMode = {
                     ideal: "environment"
                 }
@@ -171,6 +164,32 @@
                     };
                 }).catch(function (error) {
                     console.error(error)
+                    var constraints = {
+                        audio: false,
+                        video: true
+                    }
+
+                    console.warn('not use facingMode constraints is :' + JSON.stringify(constraints, null, '    '))
+                    navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+                        window.stream = stream
+                        console.warn("stream： ", stream)
+                        console.warn("get stream success")
+                        var video = document.querySelector('video');
+                        // 旧的浏览器可能没有srcObject
+                        if ("srcObject" in video) {
+                            video.srcObject = stream;
+                        } else {
+                            // 防止在新的浏览器里使用它，应为它已经不再支持了
+                            video.src = window.URL.createObjectURL(stream);
+                        }
+                        video.onloadedmetadata = function (e) {
+                            video.play();
+                            console.warn("Stream dimensions for :" + video.videoWidth + "x" + video.videoHeight);
+                        };
+                    }).catch(function (error) {
+                        console.error(error)
+                    })
+
                 })
             }
         })
