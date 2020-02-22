@@ -25,23 +25,25 @@
             width: 100%;
             height: 30px;
         }
+        video{
+            width: 90%;
+            margin: 5%;
+            height: 200px;
+            border: 1px solid #905;
+        }
     </style>
 </head>
 <body>
 
-<button onclick="getCameraStream(true, 'exact')">点击开启前置摄像头(exact)</button>
+<button onclick="getCameraStream('user')">点击开启前置摄像头(exact)</button>
 <br>
-<button onclick="getCameraStream(false, 'exact')">点击开启后置摄像头(exact)</button>
-<br>
-
-<button onclick="getCameraStream(true, 'ideal')">点击开启前置摄像头(ideal)</button>
-<br>
-<button onclick="getCameraStream(false, 'ideal')">点击开启后置摄像头(ideal)</button>
+<button onclick="getCameraStream('environment')">点击开启后置摄像头(exact)</button>
 <br>
 
-<button onclick="applyConstraints(360)">改变分辨率为360</button>
+
+<button onclick="applyConstraints(640, 360)">改变分辨率为360(exact)</button>
 <br>
-<button onclick="applyConstraints(480)">改变分辨率为480</button>
+<button onclick="applyConstraints(640, 480)">改变分辨率为480(exact)</button>
 
 <br>
 <button onclick="videoOff()" style="background: brown;color: aliceblue;">关闭摄像头</button>
@@ -184,14 +186,10 @@
                 audio: false,
                 video: {
                     width: {
-                        min: 240,
-                        ideal: 1280,
-                        max: 1280
+                        exact: 640
                     },
                     height: {
-                        min: 180,
-                        ideal: 720,
-                        max: 720
+                       exact: 360
                     },
                     deviceId: {
                         exact: deviceId
@@ -204,16 +202,10 @@
                 window.stream = stream
                 console.warn("取流成功： ", stream)
                 var video = document.querySelector('video');
-                // 旧的浏览器可能没有srcObject
-                if ("srcObject" in video) {
-                    video.srcObject = stream;
-                } else {
-                    // 防止在新的浏览器里使用它，应为它已经不再支持了
-                    video.src = window.URL.createObjectURL(stream);
-                }
+                video.srcObject = stream;
+
                 video.onloadedmetadata = function (e) {
                     console.warn("Stream dimensions for :" + video.videoWidth + "x" + video.videoHeight);
-                    video.play();
                 };
             }).catch(function (error) {
                 console.warn("取流失败！！")
@@ -226,22 +218,13 @@
     }
 
 
-    function applyConstraints(height) {
+    function applyConstraints(width, height) {
         var constraints = {
-            frameRate: {
-                max: 30,
-                ideal:30
-            },
-            aspectRatio: { min: 1.777, max: 1.778 },
             width: {
-                min: 0,
-                ideal: 640,
-                max: 640
+                exact: width
             },
             height: {
-                min: 0,
-                ideal:height,
-                max: height
+                exact: height
             }
         };
 
@@ -266,19 +249,13 @@
         })
     }
     
-    function getCameraStream(type, limit) {
+    function getCameraStream(facingMode) {
         var constraints = {
             audio: false,
-            video: {}
-        }
-        var facingMode = type ? "user" : 'environment'
-        if (limit === 'exact') {
-            constraints.video.facingMode = {
-                exact: facingMode
-            }
-        } else if (limit === 'ideal') {
-            constraints.video.facingMode = {
-                ideal: facingMode
+            video: {
+                facingMode: {
+                    exact: facingMode
+                }
             }
         }
 
@@ -287,75 +264,14 @@
             window.stream = stream
             console.warn("get stream success: " + JSON.stringify(constraints, null, '    '))
             var video = document.querySelector('video');
-            // 旧的浏览器可能没有srcObject
-            if ("srcObject" in video) {
-                video.srcObject = stream;
-            } else {
-                // 防止在新的浏览器里使用它，应为它已经不再支持了
-                video.src = window.URL.createObjectURL(stream);
-            }
+            video.srcObject = stream;
+
             video.onloadedmetadata = function (e) {
-                video.play();
                 console.warn("Stream dimensions for :" + video.videoWidth + "x" + video.videoHeight);
             };
         }).catch(function (err) {
             console.error(err);
             console.error(err.toString());
-            if (err.name === 'NotReadableError') {
-                console.warn("NotReadableError!!!!!!!!!!!!!")
-                var constraints = {
-                    audio: false,
-                    video: {
-                        facingMode: facingMode
-                    }
-                }
-
-                console.warn('constraints is :' + JSON.stringify(constraints, null, '    '))
-                navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-                    window.stream = stream
-                    console.warn("get stream success al: " + JSON.stringify(constraints, null, '    '))
-                    var video = document.querySelector('video');
-                    // 旧的浏览器可能没有srcObject
-                    if ("srcObject" in video) {
-                        video.srcObject = stream;
-                    } else {
-                        // 防止在新的浏览器里使用它，应为它已经不再支持了
-                        video.src = window.URL.createObjectURL(stream);
-                    }
-                    video.onloadedmetadata = function (e) {
-                        video.play();
-                        console.warn("Stream dimensions for :" + video.videoWidth + "x" + video.videoHeight);
-                    };
-                }).catch(function (error) {
-                    console.error(error)
-                    var constraints = {
-                        audio: false,
-                        video: true
-                    }
-
-                    console.warn('not use facingMode constraints is :' + JSON.stringify(constraints, null, '    '))
-                    navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-                        window.stream = stream
-                        console.warn("stream： ", stream)
-                        console.warn("get stream success")
-                        var video = document.querySelector('video');
-                        // 旧的浏览器可能没有srcObject
-                        if ("srcObject" in video) {
-                            video.srcObject = stream;
-                        } else {
-                            // 防止在新的浏览器里使用它，应为它已经不再支持了
-                            video.src = window.URL.createObjectURL(stream);
-                        }
-                        video.onloadedmetadata = function (e) {
-                            video.play();
-                            console.warn("Stream dimensions for :" + video.videoWidth + "x" + video.videoHeight);
-                        };
-                    }).catch(function (error) {
-                        console.error(error)
-                    })
-
-                })
-            }
         })
     }
 
