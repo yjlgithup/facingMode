@@ -171,6 +171,7 @@
 
 
     function shareVideo(){
+        closeStream()
         let videoList = document.getElementById('videoList').options
         if(videoList && videoList.length > 0){
             let selectDevice = videoList[videoList.selectedIndex]
@@ -250,6 +251,7 @@
     }
     
     function getCameraStream(facingMode) {
+        closeStream()
         var constraints = {
             audio: false,
             video: {
@@ -275,18 +277,22 @@
         })
     }
 
-    function videoOff() {
-        console.log("关闭摄像头！！！！！")
-        window.stream.oninactive = null;
-        var tracks = window.stream.getTracks();
-        for (var track in tracks) {
-            tracks[track].onended = null;
-            console.info("close stream");
-            tracks[track].stop();
-        }
+    function closeStream() {
+        if(window.stream){
+            console.log("清除流！！")
+            window.stream.oninactive = null;
+            var tracks = window.stream.getTracks();
+            for (var track in tracks) {
+                tracks[track].onended = null;
+                console.info("close stream");
+                tracks[track].stop();
+            }
 
-        var videoElement = document.getElementById('video')
-        videoElement.srcObject = null
+            var videoElement = document.getElementById('video')
+            videoElement.srcObject = null
+        }else {
+            console.warn("window.stream: ", window.stream)
+        }
     }
 
 </script>
