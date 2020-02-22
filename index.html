@@ -199,12 +199,12 @@
                 audio: false,
                 video: {
                     width: {
-                        min: 0,
+                        min: 240,
                         ideal: 1280,
                         max: 1280
                     },
                     height: {
-                        min: 0,
+                        min: 180,
                         ideal: 720,
                         max: 720
                     },
@@ -214,10 +214,10 @@
                 }
             }
 
-            console.warn('not use facingMode constraints is :' + JSON.stringify(constraints, null, '    '))
+            console.warn('getUserMedia constraints is :' + JSON.stringify(constraints, null, '    '))
             navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
                 window.stream = stream
-                console.warn("get stream success")
+                console.warn("取流成功： ", stream)
                 var video = document.querySelector('video');
                 // 旧的浏览器可能没有srcObject
                 if ("srcObject" in video) {
@@ -231,6 +231,7 @@
                     video.play();
                 };
             }).catch(function (error) {
+                console.warn("取流失败！！")
                 console.error(error)
             })
 
