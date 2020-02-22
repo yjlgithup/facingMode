@@ -43,15 +43,11 @@
 <br>
 <button onclick="applyConstraints(480)">改变分辨率为480</button>
 
+<br>
+<button onclick="videoOff()" style="background: brown;color: aliceblue;">关闭摄像头</button>
+
 <!--设备选择区域-->
 <div>
-<!--    <div class="outputSelector device-mask">-->
-<!--        <div class="audio-tag">Select audio output</div>-->
-<!--        <select class="deviceSelect" id="audioList" onchange='switchAudioSource()'>-->
-<!--            <option value="default">请选择</option>-->
-<!--        </select>-->
-<!--    </div>-->
-
     <div class="outputSelector device-mask">
         <div class="video-tag">Select video output</div>
         <select class="deviceSelect" id="videoList" onchange="shareVideo()">
@@ -166,22 +162,6 @@
                 }
                 document.getElementById('videoList').innerHTML = videoInputList.join('')
             }
-
-            // let audioOutput = deviceInfo.speakers.length > 0 ? deviceInfo.speakers : deviceInfo.microphones
-            // console.warn("get audioOutput: ", audioOutput)
-            // if(audioOutput){
-            //     for (let j = 0; j < audioOutput.length; j++) {
-            //         if (!audioOutput[j].label) {
-            //             audioOutput[j].label = 'speakers' + j
-            //         }
-            //         // 过滤default 和 communications 类型
-            //         if(audioOutput[j].deviceId !== 'default' && audioOutput[j].deviceId !== 'communications'){
-            //             audioOutputList.push('<option class="cameraOption" value="' + audioOutput[j].deviceId + '">' + audioOutput[j].label + '</option>')
-            //             console.log('speakers: ' + audioOutput[j].label)
-            //         }
-            //     }
-            //     document.getElementById('audioList').innerHTML = audioOutputList.join('')
-            // }
         }, function (error) {
             console.error('enum device error: ' + error)
         })
@@ -194,6 +174,11 @@
             let selectDevice = videoList[videoList.selectedIndex]
             console.warn("selectDevice: ", selectDevice.label)
             var deviceId = selectDevice.value
+            console.log("deviceId： ", deviceId)
+            if(deviceId === '请选择'){
+                console.warn("请先选择摄像头！！！")
+                return
+            }
 
             var constraints = {
                 audio: false,
@@ -239,7 +224,6 @@
             alert('No device here! plug device and Try again!')
         }
     }
-
 
 
     function applyConstraints(height) {
@@ -373,6 +357,20 @@
                 })
             }
         })
+    }
+
+    function videoOff() {
+        console.log("关闭摄像头！！！！！")
+        window.stream.oninactive = null;
+        var tracks = window.stream.getTracks();
+        for (var track in tracks) {
+            tracks[track].onended = null;
+            console.info("close stream");
+            tracks[track].stop();
+        }
+
+        var videoElement = document.getElementById('video')
+        videoElement.srcObject = null
     }
 
 </script>
