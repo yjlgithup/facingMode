@@ -51,6 +51,14 @@
 <!--设备选择区域-->
 <div>
     <div class="outputSelector device-mask">
+        <div class="audio-tag">Select audio output</div>
+        <select class="deviceSelect" id="audioList" onchange='switchAudioSource()'>
+            <option value="default">请选择</option>
+        </select>
+    </div>
+    <br>
+    <hr>
+    <div class="outputSelector device-mask">
         <div class="video-tag">Select video output</div>
         <select class="deviceSelect" id="videoList" onchange="shareVideo()">
             <option value="default">请选择</option>
@@ -58,6 +66,7 @@
     </div>
 </div>
 
+<audio id="localAudio" autoplay controls></audio>
 <video autoplay id="video" src=""></video>
 
 <script src="main.js"></script>

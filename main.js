@@ -99,10 +99,60 @@ function enumDevices(deviceInfoCallback) {
             }
             document.getElementById('videoList').innerHTML = videoInputList.join('')
         }
+
+        let audioOutput = deviceInfo.speakers.length > 0 ? deviceInfo.speakers : deviceInfo.microphones
+        console.warn("get audioOutput: ", audioOutput)
+        if(audioOutput){
+            for (let j = 0; j < audioOutput.length; j++) {
+                if (!audioOutput[j].label) {
+                    audioOutput[j].label = 'speakers' + j
+                }
+                // 过滤default 和 communications 类型
+                if(audioOutput[j].deviceId !== 'default' && audioOutput[j].deviceId !== 'communications'){
+                    audioOutputList.push('<option class="cameraOption" value="' + audioOutput[j].deviceId + '">' + audioOutput[j].label + '</option>')
+                    console.log('speakers: ' + audioOutput[j].label)
+                }
+            }
+            document.getElementById('audioList').innerHTML = audioOutputList.join('')
+        }
     }, function (error) {
         console.error('enum device error: ' + error)
     })
 })()
+
+
+function switchAudioSource() {
+    console.warn("switch audio source")
+    let audioList = document.getElementById('audioList').options
+    if(audioList && audioList.length > 0){
+        var audioElement = document.getElementById('localAudio')
+        let selectDevice = audioList[audioList.selectedIndex]
+        console.info("selectDevice: ", selectDevice.label)
+        console.info(" selectDevice.value: ",  selectDevice.value)
+        var constraints = {
+            audio: {
+                deviceId:  {
+                    exact: selectDevice.value
+                }
+            },
+            video: false
+        }
+
+        console.warn('getUserMedia constraints is :' + JSON.stringify(constraints, null, '    '))
+        navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+            window.stream = stream
+            console.warn("get audio stream success： ", stream)
+            audioElement.srcObject = stream;
+
+        }).catch(function (error) {
+            console.warn("get stream failed！！")
+            console.error(error)
+        })
+
+    }else {
+        alert('No device here! plug device and Try again!')
+    }
+}
 
 
 function shareVideo(){
