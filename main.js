@@ -103,6 +103,7 @@ function enumDevices(deviceInfoCallback) {
         let audioOutput = deviceInfo.speakers.length > 0 ? deviceInfo.speakers : deviceInfo.microphones
         console.warn("get audioOutput: ", audioOutput)
         if(audioOutput){
+            audioOutputList.push('<option>请选择</option>>')
             for (let j = 0; j < audioOutput.length; j++) {
                 if (!audioOutput[j].label) {
                     audioOutput[j].label = 'speakers' + j
@@ -131,9 +132,7 @@ function switchAudioSource() {
         console.info(" selectDevice.value: ",  selectDevice.value)
         var constraints = {
             audio: {
-                deviceId:  {
-                    exact: selectDevice.value
-                }
+                deviceId:  selectDevice.value
             },
             video: false
         }
