@@ -65,54 +65,56 @@ function enumDevices(deviceInfoCallback) {
 }
 
 
-enumDevices(deviceInfo => {
-    let videoInputList = []
-    let audioOutputList = []
-    let microphoneList = []
-    console.warn("deviceInfo: ", deviceInfo)
-    console.warn('deviceInfo :' + JSON.stringify(deviceInfo, null, '    '))
-    if (deviceInfo.cameras) {
-        videoInputList.push('<option>请选择</option>>')
-        for (let i = 0; i < deviceInfo.cameras.length; i++) {
-            if (!deviceInfo.cameras[i].label) {
-                deviceInfo.cameras[i].label = 'camera' + i
+window.onload = function () {
+    console.warn("windows onload ...")
+    enumDevices(deviceInfo => {
+        let videoInputList = []
+        let audioOutputList = []
+        let microphoneList = []
+        console.warn("deviceInfo: ", deviceInfo)
+        console.warn('deviceInfo :' + JSON.stringify(deviceInfo, null, '    '))
+        if (deviceInfo.cameras) {
+            videoInputList.push('<option>请选择</option>>')
+            for (let i = 0; i < deviceInfo.cameras.length; i++) {
+                if (!deviceInfo.cameras[i].label) {
+                    deviceInfo.cameras[i].label = 'camera' + i
+                }
+                videoInputList.push('<option class="cameraOption" value="' + deviceInfo.cameras[i].deviceId + '">' + deviceInfo.cameras[i].label + '</option>')
+                console.log('camera: ' + deviceInfo.cameras[i].label)
             }
-            videoInputList.push('<option class="cameraOption" value="' + deviceInfo.cameras[i].deviceId + '">' + deviceInfo.cameras[i].label + '</option>')
-            console.log('camera: ' + deviceInfo.cameras[i].label)
+            document.getElementById('videoList').innerHTML = videoInputList.join('')
         }
-        document.getElementById('videoList').innerHTML = videoInputList.join('')
-    }
 
-    if (deviceInfo.speakers) {
-        console.warn("麦克风：", deviceInfo.speakers)
-        audioOutputList.push('<option>请选择</option>>')
-        for (let i = 0; i < deviceInfo.speakers.length; i++) {
-            if (!deviceInfo.speakers[i].label) {
-                deviceInfo.speakers[i].label = 'speaker' + i
+        if (deviceInfo.speakers) {
+            console.warn("麦克风：", deviceInfo.speakers)
+            audioOutputList.push('<option>请选择</option>>')
+            for (let i = 0; i < deviceInfo.speakers.length; i++) {
+                if (!deviceInfo.speakers[i].label) {
+                    deviceInfo.speakers[i].label = 'speaker' + i
+                }
+                audioOutputList.push('<option class="cameraOption" value="' + deviceInfo.speakers[i].deviceId + '">' + deviceInfo.speakers[i].label + '</option>')
+                console.log('speaker: ' + deviceInfo.speakers[i].label)
             }
-            audioOutputList.push('<option class="cameraOption" value="' + deviceInfo.speakers[i].deviceId + '">' + deviceInfo.speakers[i].label + '</option>')
-            console.log('speaker: ' + deviceInfo.speakers[i].label)
+            document.getElementById('audioList').innerHTML = audioOutputList.join('')
         }
-        document.getElementById('audioList').innerHTML = audioOutputList.join('')
-    }
 
-    if (deviceInfo.microphones) {
-        console.warn("扬声器：, ", deviceInfo.microphones)
-        microphoneList.push('<option>请选择</option>>')
-        for (let i = 0; i < deviceInfo.microphones.length; i++) {
-            if (!deviceInfo.microphones[i].label) {
-                deviceInfo.microphones[i].label = 'microphone' + i
+        if (deviceInfo.microphones) {
+            console.warn("扬声器：, ", deviceInfo.microphones)
+            microphoneList.push('<option>请选择</option>>')
+            for (let i = 0; i < deviceInfo.microphones.length; i++) {
+                if (!deviceInfo.microphones[i].label) {
+                    deviceInfo.microphones[i].label = 'microphone' + i
+                }
+                microphoneList.push('<option class="cameraOption" value="' + deviceInfo.microphones[i].deviceId + '">' + deviceInfo.microphones[i].label + '</option>')
+                console.log('microphone: ' + deviceInfo.speakers[i].label)
             }
-            microphoneList.push('<option class="cameraOption" value="' + deviceInfo.microphones[i].deviceId + '">' + deviceInfo.microphones[i].label + '</option>')
-            console.log('microphone: ' + deviceInfo.speakers[i].label)
+            document.getElementById('microphones').innerHTML = microphoneList.join('')
         }
-        document.getElementById('microphones').innerHTML = microphoneList.join('')
-    }
 
-}, function (error) {
-    console.error('enum device error: ' + error)
-})
-
+    }, function (error) {
+        console.error('enum device error: ' + error)
+    })
+}
 
 function audioVideo() {
     let audioList = document.getElementById('audioList').options

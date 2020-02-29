@@ -1,22 +1,3 @@
-function browserPlatformDetection() {
-    var system = {}
-    var np = navigator.platform;
-    var ua = navigator.userAgent;
-    system.win = np.indexOf("Win") === 0;
-    system.mac = np.indexOf("Mac") === 0;
-    system.xll = (np === "X11") || (np.indexOf("Linux") === 0);
-    var isMobile = /Android|SymbianOS|Windows Phone|webOS|iPhone|iPad|iPod|BlackBerry/i.test(ua);
-    var isPc = (system.win || system.mac || system.xll) && !isMobile;
-    console.warn("isPc: ", isPc)
-    console.warn("isMobile: ", isMobile)
-    return {
-        isMobile: isMobile,
-        isPc: isPc
-    }
-}
-browserPlatformDetection()
-
-
 
 function shareVideo(){
     closeStream()
