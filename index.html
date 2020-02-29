@@ -36,40 +36,49 @@
 </head>
 <body>
 
-<button onclick="getCameraStream('user')">点击开启前置摄像头(exact)</button>
-<br>
-<button onclick="getCameraStream('environment')">点击开启后置摄像头(exact)</button>
-<br>
+<!--<button onclick="getCameraStream('user')">点击开启前置摄像头(exact)</button>-->
+<!--<br>-->
+<!--<button onclick="getCameraStream('environment')">点击开启后置摄像头(exact)</button>-->
+<!--<br>-->
 
 
-<button onclick="applyConstraints(640, 360)">改变分辨率为360(exact)</button>
-<br>
-<button onclick="applyConstraints(640, 480)">改变分辨率为480(exact)</button>
+<!--<button onclick="applyConstraints(640, 360)">改变分辨率为360(exact)</button>-->
+<!--<br>-->
+<!--<button onclick="applyConstraints(640, 480)">改变分辨率为480(exact)</button>-->
 
-<br>
-<button onclick="closeStream()" style="background: brown;color: aliceblue;">关闭摄像头</button>
+<!--<br>-->
+<!--<button onclick="closeStream()" style="background: brown;color: aliceblue;">关闭摄像头</button>-->
 
 <!--设备选择区域-->
 <div>
     <div class="outputSelector device-mask">
-        <div class="video-tag">Select video output</div>
+        <div class="video-tag">选择摄像头</div>
         <select class="deviceSelect" id="videoList" onchange="shareVideo()">
             <option value="default">请选择</option>
         </select>
     </div>
 
     <div class="outputSelector device-mask">
-        <div class="video-tag">Select audio output</div>
+        <div class="video-tag">选择扬声器</div>
         <select class="deviceSelect" id="audioList" onchange="audioVideo()">
+            <option value="default">请选择</option>
+        </select>
+    </div>
+
+    <div class="outputSelector device-mask">
+        <div class="video-tag">选择麦克风</div>
+        <select class="deviceSelect" id="microphones" onchange="getmicrophones()">
             <option value="default">请选择</option>
         </select>
     </div>
 </div>
 
-<audio src="" autoplay controls></audio>
+
+<audio id="audio" src="" autoplay controls></audio>
 
 <video autoplay id="video" src=""></video>
 
-<script src="main.js"></script>
+<script src="audio.js"></script>
+<!--<script src="video.js"></script>-->
 </body>
 </html>
