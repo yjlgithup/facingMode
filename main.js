@@ -141,7 +141,9 @@ function audioVideo() {
         }
 
         var constraints = {
-            audio: deviceId,
+            audio: {
+                deviceId: deviceId,
+            },
             video: false
         }
 
