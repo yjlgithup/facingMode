@@ -15,16 +15,17 @@
     <style>
         button {
             height: 35px;
-            width: 100%;
+            width: 50%;
             margin-bottom: 15px;
-            font-size: medium;
+            font-size: small;
             font-family: cursive;
             color: black;
+            float: left;
         }
         select{
-            width: 100%;
+            width: 70%;
             height: 40px;
-            margin: 15px 0;
+            float: left;
         }
         video{
             width: 90%;
@@ -32,25 +33,23 @@
             height: 200px;
             border: 1px solid #905;
         }
+        .outputSelector div{
+            width: 30%;
+            float: left;
+        }
     </style>
 </head>
 <body>
 
-<!--<button onclick="getCameraStream('user')">点击开启前置摄像头(exact)</button>-->
-<!--<br>-->
-<!--<button onclick="getCameraStream('environment')">点击开启后置摄像头(exact)</button>-->
-<!--<br>-->
+<button onclick="getCameraStream('user')">开前置摄像头(exact)</button>
+<button onclick="getCameraStream('environment')">开后置摄像头(exact)</button>
+<button onclick="applyConstraints(640, 360)">改分辨率为360(exact)</button>
+<button onclick="applyConstraints(640, 480)">改分辨率为480(exact)</button>
 
-
-<!--<button onclick="applyConstraints(640, 360)">改变分辨率为360(exact)</button>-->
-<!--<br>-->
-<!--<button onclick="applyConstraints(640, 480)">改变分辨率为480(exact)</button>-->
-
-<!--<br>-->
-<!--<button onclick="closeStream()" style="background: brown;color: aliceblue;">关闭摄像头</button>-->
+<button onclick="closeStream()" style="width: 100%;background: brown;color: aliceblue;">关闭摄像头</button>
 
 <!--设备选择区域-->
-<div>
+<div style="clear: both">
     <div class="outputSelector device-mask">
         <div class="video-tag">选择摄像头</div>
         <select class="deviceSelect" id="videoList" onchange="shareVideo()">
@@ -72,7 +71,7 @@
         </select>
     </div>
 
-    <button onclick="gumForAudio()" style="background: brown;color: aliceblue;">取音频（不限制）</button>
+    <button onclick="gumForAudio()" style="width: 100%;background: #ffa500;color: aliceblue;">取音频（不限制）</button>
 </div>
 
 
@@ -81,6 +80,6 @@
 <video autoplay id="video" src=""></video>
 
 <script src="audio.js"></script>
-<!--<script src="video.js"></script>-->
+<script src="video.js"></script>
 </body>
 </html>
