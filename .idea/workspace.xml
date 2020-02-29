@@ -4,6 +4,7 @@
     <list default="true" id="51f92777-f804-452b-939c-f4755f50d671" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +27,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="C:/workspace/grandstream/IPVT_WebRTC_Client" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../grandstream/IPVT_WebRTC_Client" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -62,7 +63,10 @@
       <workItem from="1582032009535" duration="148000" />
       <workItem from="1582191540659" duration="7447000" />
       <workItem from="1582218514203" duration="669000" />
-      <workItem from="1582292417206" duration="13772000" />
+      <workItem from="1582292417206" duration="15011000" />
+      <workItem from="1582439066501" duration="596000" />
+      <workItem from="1582812825470" duration="4951000" />
+      <workItem from="1582980993143" duration="1924000" />
     </task>
     <servers />
   </component>

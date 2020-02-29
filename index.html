@@ -23,7 +23,8 @@
         }
         select{
             width: 100%;
-            height: 30px;
+            height: 40px;
+            margin: 15px 0;
         }
         video{
             width: 90%;
@@ -56,7 +57,16 @@
             <option value="default">请选择</option>
         </select>
     </div>
+
+    <div class="outputSelector device-mask">
+        <div class="video-tag">Select audio output</div>
+        <select class="deviceSelect" id="audioList" onchange="audioVideo()">
+            <option value="default">请选择</option>
+        </select>
+    </div>
 </div>
+
+<audio src="" autoplay controls></audio>
 
 <video autoplay id="video" src=""></video>
 
