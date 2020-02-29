@@ -126,7 +126,7 @@ function audioVideo() {
             return
         }
 
-        getAudioStream(deviceId, '扬声器')
+        getAudioStream(deviceId, '扬声器', true)
 
     }else {
         alert('No device here! plug device and Try again!')
@@ -140,7 +140,7 @@ function getmicrophones() {
         let selectDevice = microphonesList[microphonesList.selectedIndex]
         console.warn("selectDevice: ", selectDevice.label)
         var deviceId = selectDevice.value
-        console.log("deviceId： ", deviceId)
+        console.log("deviceId： ", deviceId, true)
         if(deviceId === '请选择'){
             console.warn("请先选择麦克风！！！")
             return
@@ -151,11 +151,10 @@ function getmicrophones() {
     }
 }
 
-function getAudioStream(deviceId, type) {
+function getAudioStream(deviceId, type, useDeviceId) {
+    console.info("is useDeviceId: ", useDeviceId)
     var constraints = {
-        audio: {
-            deviceId: deviceId,
-        },
+        audio: useDeviceId ? { deviceId: deviceId} : true,
         video: false
     }
 
@@ -167,6 +166,12 @@ function getAudioStream(deviceId, type) {
         audioElement.srcObject = stream;
     }).catch(function (error) {
         console.error("取流失败！！")
-        console.error(error)
+        console.warn("error name: ", error.name)
+        console.error(error.toString())
     })
+}
+
+function gumForAudio() {
+    console.warn("直接获取音频，不使用deviceId，因为使用default会出错")
+    getAudioStream(null, "随机", false)
 }
