@@ -56,7 +56,6 @@ function enumDevices(deviceInfoCallback) {
             isConstraintsKeywordSupport: isConstraintsKeywordSupport
         }
 
-        console.warn("deviceInfos: ", JSON.stringify(result.cameras, null, ' '))
         deviceInfoCallback(result)
         // return result
     }).catch(function (err) {
@@ -72,15 +71,16 @@ window.onload = function () {
         let audioOutputList = []
         let microphoneList = []
         console.warn("deviceInfo: ", deviceInfo)
-        console.warn('deviceInfo :' + JSON.stringify(deviceInfo, null, '    '))
+        // console.warn('deviceInfo :' + JSON.stringify(deviceInfo, null, '    '))
         if (deviceInfo.cameras) {
             videoInputList.push('<option>请选择</option>>')
             for (let i = 0; i < deviceInfo.cameras.length; i++) {
-                if (!deviceInfo.cameras[i].label) {
-                    deviceInfo.cameras[i].label = 'camera' + i
+                var currentCamera = deviceInfo.cameras[i]
+                if (!currentCamera.label) {
+                    currentCamera.label = 'camera' + i
                 }
-                videoInputList.push('<option class="cameraOption" value="' + deviceInfo.cameras[i].deviceId + '">' + deviceInfo.cameras[i].label + '</option>')
-                console.log('camera: ' + deviceInfo.cameras[i].label)
+                videoInputList.push('<option class="cameraOption" value="' + currentCamera.deviceId + '">' + currentCamera.label + '</option>')
+                console.log('camera: ' + currentCamera.label)
             }
             document.getElementById('videoList').innerHTML = videoInputList.join('')
         }
@@ -88,12 +88,13 @@ window.onload = function () {
         if (deviceInfo.speakers) {
             console.warn("麦克风：", deviceInfo.speakers)
             audioOutputList.push('<option>请选择</option>>')
-            for (let i = 0; i < deviceInfo.speakers.length; i++) {
-                if (!deviceInfo.speakers[i].label) {
-                    deviceInfo.speakers[i].label = 'speaker' + i
+            for (let j = 0; j < deviceInfo.speakers.length; j++) {
+                var currentSpeaker = deviceInfo.speakers[j]
+                if (!currentSpeaker.label) {
+                    currentSpeaker.label = 'speaker' + j
                 }
-                audioOutputList.push('<option class="cameraOption" value="' + deviceInfo.speakers[i].deviceId + '">' + deviceInfo.speakers[i].label + '</option>')
-                console.log('speaker: ' + deviceInfo.speakers[i].label)
+                audioOutputList.push('<option class="SpeakerOption" value="' + currentSpeaker.deviceId + '">' + currentSpeaker.label + '</option>')
+                console.log('speaker: ' + currentSpeaker.label)
             }
             document.getElementById('audioList').innerHTML = audioOutputList.join('')
         }
@@ -101,12 +102,13 @@ window.onload = function () {
         if (deviceInfo.microphones) {
             console.warn("扬声器：, ", deviceInfo.microphones)
             microphoneList.push('<option>请选择</option>>')
-            for (let i = 0; i < deviceInfo.microphones.length; i++) {
-                if (!deviceInfo.microphones[i].label) {
-                    deviceInfo.microphones[i].label = 'microphone' + i
+            for (let k = 0; k < deviceInfo.microphones.length; k++) {
+                var currentMicrophones = deviceInfo.microphones[k]
+                if (!currentMicrophones.label) {
+                    currentMicrophones.label = 'microphone' + k
                 }
-                microphoneList.push('<option class="cameraOption" value="' + deviceInfo.microphones[i].deviceId + '">' + deviceInfo.microphones[i].label + '</option>')
-                console.log('microphone: ' + deviceInfo.speakers[i].label)
+                microphoneList.push('<option class="microphoneOption" value="' + currentMicrophones.deviceId + '">' + currentMicrophones.label + '</option>')
+                console.log('microphone: ' + currentMicrophones.label)
             }
             document.getElementById('microphones').innerHTML = microphoneList.join('')
         }
