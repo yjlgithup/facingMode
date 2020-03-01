@@ -96,6 +96,7 @@
             pc = new window.RTCPeerConnection( config , RTCpeerConnectionOptional);
             console.warn(pc)
         }catch (e) {
+            console.warn(e)
             console.warn(e.name)
             console.error(e.toString())
         }
