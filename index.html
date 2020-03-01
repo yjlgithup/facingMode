@@ -72,7 +72,10 @@
     </div>
 
     <button onclick="gumForAudio()" style="width: 100%;background: #ffa500;color: aliceblue;">取音频（不限制）</button>
+
 </div>
+
+<button onclick="createPeercon()" style="width: 100%;background: #ffa500;color: aliceblue;">创建peerConnection</button>
 
 
 <audio id="audio" src="" autoplay controls></audio>
@@ -81,5 +84,16 @@
 
 <script src="audio.js"></script>
 <script src="video.js"></script>
+<script>
+    // 创建peerConnection
+    var pc
+    function createPeercon() {
+        var config = {}
+        config["sdpSemantics"] = "plan-b";
+        var RTCpeerConnectionOptional = { optional: [ { 'pcName': "PC_" + Math.random().toString(36).substr(2) }, { 'googDscp': true }, { 'googIPv6': false } ] };
+        pc = new window.RTCPeerConnection( config , RTCpeerConnectionOptional);
+        console.warn(pc)
+    }
+</script>
 </body>
 </html>
