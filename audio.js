@@ -149,7 +149,7 @@ function getmicrophones() {
             console.warn("请先选择麦克风！！！")
             return
         }
-        getAudioStream(deviceId, '麦克风')
+        getAudioStream(deviceId, '麦克风', true)
     }else {
         alert('No device here! plug device and Try again!')
     }

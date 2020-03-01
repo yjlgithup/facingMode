@@ -38,8 +38,9 @@ function shareVideo(){
                 console.warn("Stream dimensions for :" + video.videoWidth + "x" + video.videoHeight);
             };
         }).catch(function (error) {
-            console.warn("取流失败！！")
-            console.error(error)
+            console.warn("视频取流失败！！")
+            console.warn("error name: ", error.name)
+            console.error(error.toString())
         })
 
     }else {
