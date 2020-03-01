@@ -75,7 +75,8 @@
 
 </div>
 
-<button onclick="createPeercon()" style="width: 100%;background: #ffa500;color: aliceblue;">创建peerConnection</button>
+<button onclick="createPeercon()" style="background: #0086b3;color: aliceblue;">创建PC with config</button>
+<button onclick="createPCWithoutConfig()" style="background: #0086b3;color: aliceblue;">创建PC without config</button>
 
 
 <audio id="audio" src="" autoplay controls></audio>
@@ -85,22 +86,58 @@
 <script src="audio.js"></script>
 <script src="video.js"></script>
 <script>
-    // 创建peerConnection
-    var pc
-    function createPeercon() {
-        var config = {}
-        config["sdpSemantics"] = "plan-b";
-        var RTCpeerConnectionOptional = { optional: [ { 'pcName': "PC_" + Math.random().toString(36).substr(2) }, { 'googDscp': true }, { 'googIPv6': false } ] };
 
-        try {
-            pc = new window.RTCPeerConnection( config , RTCpeerConnectionOptional);
-            console.warn(pc)
-        }catch (e) {
-            console.warn(e)
-            console.warn(e.name)
-            console.error(e.toString())
+    // 判断是否支持webRTC
+    function isSupports(){
+        var e = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
+            , t = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia || navigator.mozGetUserMedia || navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+            , n = window.WebSocket
+
+        var result = !!e && !!t && !!n
+        console.warn("is webRTC Supports result： ", result)
+        return result;
+    }
+
+    // 创建peerConnection
+    function createPeercon() {
+        var pc
+        if(isSupports()){
+            console.warn("createPeercon: prepare create RTCPeerConnection")
+            var config = {}
+            config["sdpSemantics"] = "plan-b";
+            var RTCpeerConnectionOptional = { optional: [ { 'pcName': "PC_" + Math.random().toString(36).substr(2) }, { 'googDscp': true }, { 'googIPv6': false } ] };
+            console.warn("config :", config)
+            console.warn("RTCpeerConnectionOptional： ", RTCpeerConnectionOptional)
+            try {
+                pc = new window.RTCPeerConnection( config , RTCpeerConnectionOptional);
+                console.warn("createPeercon：creat success: ", pc)
+            }catch (e) {
+                console.warn(e)
+                console.warn(e.name)
+                console.error(e.toString())
+            }
+        }else {
+            console.warn("createPeercon： WebRTC is not support!")
         }
     }
+    
+    function createPCWithoutConfig() {
+        var pc
+        if(isSupports()){
+            try {
+                console.warn("createPCWithoutConfig: prepare create RTCPeerConnection")
+                pc = new window.RTCPeerConnection();
+                console.warn("createPCWithoutConfig: creat success: ", pc)
+            }catch (e) {
+                console.warn(e)
+                console.warn(e.name)
+                console.error(e.toString())
+            }
+        }else {
+            console.warn("createPCWithoutConfig： WebRTC is not support!")
+        }
+    }
+
 </script>
 </body>
 </html>
