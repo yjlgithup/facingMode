@@ -82,14 +82,49 @@ function applyConstraints(width, height) {
 
 function getCameraStream(facingMode) {
     closeStream()
-    var constraints = {
-        audio: false,
-        video: {
-            facingMode: {
-                exact: facingMode
+    // var constraints = {
+    //     audio: false,
+    //     video: {
+    //         facingMode: {
+    //             exact: facingMode
+    //         }
+    //     }
+    // }
+    var constraints
+    if(facingMode === 'user'){
+        constraints = {
+            audio: false,
+            video: {
+                width: {
+                    ideal: 320,
+                    max: 320
+                },
+                height: {
+                    ideal: 180,
+                    max: 180
+                },
+                facingMode: {
+                    exact: facingMode
+                }
+            }
+        }
+    }else {
+        constraints = {
+            audio: false,
+            video: {
+                width: {
+                    exact: 320
+                },
+                height: {
+                    exact: 180
+                },
+                facingMode: {
+                    exact: facingMode
+                }
             }
         }
     }
+
 
     console.warn('constraints' + JSON.stringify(constraints, null, '    '))
     navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
